@@ -47,5 +47,6 @@
     "inDev": false,
     "strategy": "default",
     "clearDist": true
-  }
+  },
+  "version": "1.0.0"
 }

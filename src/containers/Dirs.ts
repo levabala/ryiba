@@ -7,10 +7,10 @@ import { fetchDir, fetchDirs } from '../fetchers/FetchDirs';
 import { requestCalc } from '../fetchers/RequestCalc';
 
 export enum CalcState {
+  Missing,
   ProcessingRequested,
   InProcess,
-  Missing,
-  Done,
+  Calculated,
   Downloading,
   Downloaded
 }

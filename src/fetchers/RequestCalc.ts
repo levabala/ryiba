@@ -11,7 +11,7 @@ export async function* requestCalc(dirName: string, calcName: string) {
 
   await emulateLatency(1000, 2000);
 
-  setCalcState(dirName, calcName, CalcState.Done);
+  setCalcState(dirName, calcName, CalcState.Calculated);
 
   yield "processing completed";
 

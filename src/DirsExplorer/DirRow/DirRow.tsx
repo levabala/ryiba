@@ -12,7 +12,7 @@ export interface DirRowProps {
 }
 
 const calcState2Class: Record<CalcState, string> = {
-  [CalcState.Done]: "done",
+  [CalcState.Calculated]: "calculated",
   [CalcState.ProcessingRequested]: "processingRequested",
   [CalcState.InProcess]: "inProcess",
   [CalcState.Missing]: "missing",
@@ -32,7 +32,7 @@ const DirRow = ({ dir, requestCalculation, downloadResult }: DirRowProps) => {
             onClick={e => {
               const calcType = (e.target as HTMLButtonElement).innerText;
               switch (calc.state) {
-                case CalcState.Done:
+                case CalcState.Calculated:
                   downloadResult(calcType);
                   break;
                 // case CalcState.Downloading:
