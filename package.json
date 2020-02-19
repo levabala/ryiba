@@ -48,5 +48,7 @@
     "strategy": "default",
     "clearDist": true
   },
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "name": "ryiba",
+  "author": {"name": "levabala","email": "levabala@ya.ru"}
 }
