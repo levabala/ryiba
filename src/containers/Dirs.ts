@@ -2,13 +2,17 @@ import { Map } from 'immutable';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createContainer } from 'unstated-next';
 
+import { fetchCalcResult } from '../fetchers/FetchCalcResult';
 import { fetchDir, fetchDirs } from '../fetchers/FetchDirs';
 import { requestCalc } from '../fetchers/RequestCalc';
 
 export enum CalcState {
+  ProcessingRequested,
   InProcess,
   Missing,
-  Done
+  Done,
+  Downloading,
+  Downloaded
 }
 
 export interface DirCalc {
@@ -38,8 +42,26 @@ export const DirsContainer = createContainer(() => {
     setDirsMap(dirs.set(dir.name, dir));
   };
 
+  const downloadResult = async (dirName: string, calcName: string) => {
+    console.log(`request downloading for ${dirName}:${calcName}`);
+    const dir = dirsMap.get(dirName) as Dir;
+    const newDir: Dir = {
+      name: dir.name,
+      calcs: dir.calcs.map(calc =>
+        calc.name === calcName
+          ? ({ name: calc.name, state: CalcState.Downloading } as DirCalc)
+          : calc
+      )
+    };
+    updateDir(newDir);
+
+    await fetchCalcResult(dirName, calcName);
+
+    const updatedDir = await fetchDir(dirName);
+    updateDir(updatedDir);
+  };
+
   const requestCalculation = async (dirName: string, calcName: string) => {
-    console.log(`requestCalculation for ${dirName}:${calcName}`);
     const [newDirsList, needCalculation] = dirsList.reduce(
       ([dirs, needCalc], dir) => {
         if (dir.name !== dirName)
@@ -55,7 +77,7 @@ export const DirsContainer = createContainer(() => {
 
             const newDirCalc: DirCalc = {
               name: calc.name,
-              state: CalcState.InProcess
+              state: CalcState.ProcessingRequested
             };
             return [[...calcs, newDirCalc], true] as [DirCalc[], boolean];
           },
@@ -72,14 +94,19 @@ export const DirsContainer = createContainer(() => {
     );
 
     if (!needCalculation) return;
+    console.log(`requestCalculation for ${dirName}:${calcName}`);
 
     // set "isProcessing"
     setDirsMap(newDirsList);
 
-    await requestCalc(dirName, calcName);
-    const updatedDir = await fetchDir(dirName);
-    updateDir(updatedDir);
+    const calcIterator = requestCalc(dirName, calcName);
+
+    console.log(await calcIterator.next());
+    updateDir(await fetchDir(dirName));
+
+    console.log(await calcIterator.next());
+    updateDir(await fetchDir(dirName));
   };
 
-  return { dirsList, requestCalculation };
+  return { dirsList, requestCalculation, downloadResult };
 });

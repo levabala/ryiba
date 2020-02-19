@@ -8,15 +8,19 @@ import { CalcState, Dir } from '../../containers/Dirs';
 export interface DirRowProps {
   dir: Dir;
   requestCalculation: (calcType: string) => void;
+  downloadResult: (calcType: string) => void;
 }
 
 const calcState2Class: Record<CalcState, string> = {
   [CalcState.Done]: "done",
+  [CalcState.ProcessingRequested]: "processingRequested",
   [CalcState.InProcess]: "inProcess",
-  [CalcState.Missing]: "missing"
+  [CalcState.Missing]: "missing",
+  [CalcState.Downloading]: "downloading",
+  [CalcState.Downloaded]: "downloaded"
 };
 
-const DirRow = ({ dir, requestCalculation }: DirRowProps) => {
+const DirRow = ({ dir, requestCalculation, downloadResult }: DirRowProps) => {
   return (
     <div styleName="dirRow">
       <span styleName="name">{dir.name}</span>
@@ -25,9 +29,21 @@ const DirRow = ({ dir, requestCalculation }: DirRowProps) => {
           <button
             styleName={classnames("calc", calcState2Class[calc.state])}
             key={calc.name}
-            onClick={e =>
-              requestCalculation((e.target as HTMLButtonElement).innerText)
-            }
+            onClick={e => {
+              const calcType = (e.target as HTMLButtonElement).innerText;
+              switch (calc.state) {
+                case CalcState.Done:
+                  downloadResult(calcType);
+                  break;
+                // case CalcState.Downloading:
+                //   downloadResult(calcType)
+                //   break;
+
+                default:
+                  requestCalculation(calcType);
+                  break;
+              }
+            }}
           >
             {calc.name}
           </button>

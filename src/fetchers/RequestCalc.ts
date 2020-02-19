@@ -1,34 +1,19 @@
 import { emulateLatency } from '../assembly/latency';
-import { CalcState, Dir, DirCalc } from '../containers/Dirs';
-import { mockedState } from './FetchDirs';
+import { CalcState } from '../containers/Dirs';
+import { setCalcState } from './FetchDirs';
 
-export async function requestCalc(dirName: string, calcName: string) {
-  await emulateLatency(0, 1000);
+export async function* requestCalc(dirName: string, calcName: string) {
+  await emulateLatency(0, 500);
 
-  mockedState.set(dirName, {
-    name: dirName,
-    calcs: (mockedState.get(dirName) as Dir).calcs.map(calc =>
-      calc.name === calcName
-        ? ({ name: calc.name, state: CalcState.InProcess } as DirCalc)
-        : calc
-    )
-  });
+  setCalcState(dirName, calcName, CalcState.InProcess);
+
+  yield "processing started";
 
   await emulateLatency(1000, 2000);
 
-  const dir = mockedState.get(dirName) as Dir;
-  mockedState.set(dirName, {
-    name: dirName,
-    calcs: dir.calcs.reduce((calcs, calc) => {
-      if (calc.name !== calcName) return [...calcs, calc];
+  setCalcState(dirName, calcName, CalcState.Done);
 
-      const newDirCalc: DirCalc = {
-        name: calc.name,
-        state: CalcState.Done
-      };
-      return [...calcs, newDirCalc];
-    }, [] as DirCalc[])
-  });
+  yield "processing completed";
 
   console.log(`calculation for ${dirName}:${calcName} done`);
 }

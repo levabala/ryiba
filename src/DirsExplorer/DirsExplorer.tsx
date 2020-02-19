@@ -6,7 +6,11 @@ import { DirsContainer } from '../containers/Dirs';
 import DirRow from './DirRow';
 
 const DirsExplorer = () => {
-  const { dirsList, requestCalculation } = DirsContainer.useContainer();
+  const {
+    dirsList,
+    requestCalculation,
+    downloadResult
+  } = DirsContainer.useContainer();
 
   return (
     <div styleName="dirsExplorer">
@@ -14,11 +18,14 @@ const DirsExplorer = () => {
         const requestCalculationLocal = (calcType: string) =>
           requestCalculation(dir.name, calcType);
 
+        const downloadResultLocal = (calcType: string) =>
+          downloadResult(dir.name, calcType);
         return (
           <DirRow
             dir={dir}
             key={dir.name}
             requestCalculation={requestCalculationLocal}
+            downloadResult={downloadResultLocal}
           />
         );
       })}

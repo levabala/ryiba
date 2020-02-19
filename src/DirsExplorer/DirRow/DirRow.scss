@@ -14,6 +14,7 @@
       outline: none;
 
       font-size: 0.8em;
+      transition: background 0.2s ease-in-out;
 
       &.missing {
         background: rgba(211, 211, 211, 0.3);
@@ -24,6 +25,31 @@
 
         &:active {
           background: rgba(211, 211, 211, 0.7);
+        }
+      }
+
+      &.processingRequested {
+        background: rgba(255, 166, 0, 0.3);
+        transition-duration: 0s;
+      }
+
+      &.inProcess {
+        background: rgba(255, 166, 0, 0.3);
+
+        animation-name: pulsingProcessing;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+
+        @keyframes pulsingProcessing {
+          0% {
+            background: rgba(255, 166, 0, 0.3);
+          }
+          50% {
+            background: rgba(0, 100, 0, 0.3);
+          }
+          100% {
+            background: rgba(255, 166, 0, 0.3);
+          }
         }
       }
 
@@ -39,15 +65,34 @@
         }
       }
 
-      &.inProcess {
-        background: rgba(255, 166, 0, 0.3);
+      &.downloading {
+        background: rgba(0, 100, 0, 0.3);
+        animation-name: pulsingDownloading;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+
+        @keyframes pulsingDownloading {
+          0% {
+            background: rgba(0, 100, 0, 0.3);
+          }
+          50% {
+            background: rgba(2, 195, 2, 0.3);
+          }
+          100% {
+            background: rgba(0, 100, 0, 0.3);
+          }
+        }
+      }
+
+      &.downloaded {
+        background: rgba(2, 195, 2, 0.3);
 
         &:hover {
-          background: rgba(255, 166, 0, 0.5);
+          background: rgba(2, 195, 2, 0.5);
         }
 
         &:active {
-          background: rgba(255, 166, 0, 0.7);
+          background: rgba(2, 195, 2, 0.7);
         }
       }
     }
