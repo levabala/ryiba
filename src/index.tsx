@@ -3,8 +3,9 @@ import './index.scss';
 import React from 'react';
 import { render } from 'react-dom';
 
+import { DirsContainer } from './containers/Dirs';
+import DirsExplorer from './DirsExplorer';
 import { register } from './serviceWorker';
-import TestComponent from './TestComponent';
 
 // here we disable console and performance for better production experience
 // console.log(process.env.NODE_ENV);
@@ -15,9 +16,9 @@ import TestComponent from './TestComponent';
 // }
 
 const App = () => (
-  <div styleName="a">
-    kek <TestComponent />
-  </div>
+  <DirsContainer.Provider>
+    <DirsExplorer />
+  </DirsContainer.Provider>
 );
 
 render(<App />, document.getElementById("root"));

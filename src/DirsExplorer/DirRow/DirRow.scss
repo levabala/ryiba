@@ -1,0 +1,23 @@
+.dirRow {
+  display: flex;
+  justify-content: space-between;
+
+  .name {
+  }
+
+  .calcs {
+    .calc {
+      border: solid black 1px;
+      padding: 0.2em;
+      margin-left: 1em;
+
+      &:hover {
+        background: lightgray;
+      }
+
+      &:active {
+        background: rgb(175, 175, 175);
+      }
+    }
+  }
+}
