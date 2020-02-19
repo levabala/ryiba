@@ -6,13 +6,22 @@ import { DirsContainer } from '../containers/Dirs';
 import DirRow from './DirRow';
 
 const DirsExplorer = () => {
-  const { dirsList } = DirsContainer.useContainer();
+  const { dirsList, requestCalculation } = DirsContainer.useContainer();
 
   return (
     <div styleName="dirsExplorer">
-      {dirsList.map(dir => (
-        <DirRow dir={dir} key={dir.name} />
-      ))}
+      {dirsList.map(dir => {
+        const requestCalculationLocal = (calcType: string) =>
+          requestCalculation(dir.name, calcType);
+
+        return (
+          <DirRow
+            dir={dir}
+            key={dir.name}
+            requestCalculation={requestCalculationLocal}
+          />
+        );
+      })}
     </div>
   );
 };

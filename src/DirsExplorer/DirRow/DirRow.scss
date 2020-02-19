@@ -11,12 +11,44 @@
       padding: 0.2em;
       margin-left: 1em;
 
-      &:hover {
-        background: lightgray;
+      outline: none;
+
+      font-size: 0.8em;
+
+      &.missing {
+        background: rgba(211, 211, 211, 0.3);
+
+        &:hover {
+          background: rgba(211, 211, 211, 0.5);
+        }
+
+        &:active {
+          background: rgba(211, 211, 211, 0.7);
+        }
       }
 
-      &:active {
-        background: rgb(175, 175, 175);
+      &.done {
+        background: rgba(0, 100, 0, 0.3);
+
+        &:hover {
+          background: rgba(0, 100, 0, 0.5);
+        }
+
+        &:active {
+          background: rgba(0, 100, 0, 0.7);
+        }
+      }
+
+      &.inProcess {
+        background: rgba(255, 166, 0, 0.3);
+
+        &:hover {
+          background: rgba(255, 166, 0, 0.5);
+        }
+
+        &:active {
+          background: rgba(255, 166, 0, 0.7);
+        }
       }
     }
   }
